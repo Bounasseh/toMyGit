@@ -1,0 +1,3 @@
+mongod --config C:\MongoDB\config\mongodb.conf --install
+
+mongoimport --host localhost:27017 --db myDataBase --collection persons<file.csv
