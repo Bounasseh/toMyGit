@@ -16,6 +16,9 @@ A partir du client MongoDB nous pouvons éxécuter les commandes suivantes :
 		local       0.000GB
 		myDataBase  0.000GB
 
+	"use myDataBase" : pour switcher vers une base de données.
+		switched to db myDataBase
+
 	"show collections" : pour afficher les tables := collections.
 		persons
 
