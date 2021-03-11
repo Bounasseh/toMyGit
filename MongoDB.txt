@@ -24,3 +24,56 @@ A partir du client MongoDB nous pouvons éxécuter les commandes suivantes :
 
 	"db.persons.find()" : pour afficher les données.
 		{ "_id" : ObjectId("6048d9839b964c6ca2426168"), "prenom" : "Hamza" }
+
+Intérrogation de MongoDB par PHP :
+
+	Exemple 1 :
+
+		<?php
+		require 'vendor/autoload.php';
+
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		$mydb = $client->mydb;
+		$result = $mydb->createCollection('myTable');
+		var_dump($result);
+		echo "<br>";
+		$result = $mydb->createCollection('myTable2');
+		var_dump($result);
+		echo "<br>";
+		echo "<br>";
+		foreach($mydb->listCollections() as $collection)
+		{
+			var_dump($collection);
+		}
+		echo "<br>";
+		echo "<br>";
+		$result = $mydb->dropCollection('myTable2');
+
+		foreach($mydb->listCollections() as $collection)
+		{
+			var_dump($collection);
+		}
+
+		//echo phpinfo();
+		?>
+
+	Exemple 2 :
+
+		<?php
+		require 'vendor/autoload.php';
+
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		$mydb = $client->mydb;
+		$mydb->createCollection('myTable');
+		$mydb = $client->mydb2;
+		$mydb->createCollection('myTable2');
+		
+		foreach($client->listDatabases() as $db)
+		{
+			var_dump($db);
+		}
+
+		//echo phpinfo();
+		?>
