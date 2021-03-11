@@ -1,3 +1,11 @@
+Il faut tout d'abord savoir que :
+
+	MongoDB >=< MySQL
+	Database >=< Database
+	Collection >=< Table
+	Document >=< Row
+	Field >=< Column
+
 Pour démarrer le serveur MongoDB nous exécutons la commande "mongod"
 Pour démarrer le client MongoDB nous exécutons la commande "mongo"
 A partir du client MongoDB nous pouvons éxécuter les commandes suivantes :
@@ -87,3 +95,107 @@ Intérrogation de MongoDB par PHP :
 
 # Dans le context de PHP, la seule instruction "$mydb = $client->newdb;" ne suffit pas de créer la base de données "newdb", mais il faut aussi créer une première table "$mydb->createCollection('newTable');"
 
+	Exemple 3 (inserer une seule donnée) :
+
+		<?php
+			require 'vendor/autoload.php';
+
+			//$client = new MongoDB\Client("mongodb://localhost:27010");
+			$client = new MongoDB\Client;
+			$mydb = $client->mydb;
+			//$myTable = $mydb->createCollection('myTable');
+			$myTable = $mydb->myTable; //au cas où la table est déjà créée
+			
+			for($i = 0; $i < 10; $i++)
+			{
+				$dataInserted = $myTable->insertOne(
+					[
+						"_id" => $i,
+						"name" => "Hamza",
+						"age" => 22
+					]
+				);
+			
+				printf("Count of document inserted : %d", $dataInserted->getInsertedCount());
+				var_dump($dataInserted->getInsertedId());
+				echo "<br>";
+			}
+		?>
+
+		Exemple 3 (inserer plusieurs données) :
+
+		<?php
+		require 'vendor/autoload.php';
+
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		$mydb = $client->mydb;
+		//$myTable = $mydb->createCollection('myTable');
+		$myTable = $mydb->myTable;
+
+			$dataInserted = $myTable->insertMany(
+				[
+					[
+						"_id" => 1,
+						"name" => "Hamza",
+						"age" => 22
+					],
+					[
+						"_id" => 2,
+						"name" => "Bounasseh",
+						"age" => 66
+					]
+				]
+			);
+		
+			printf("Count of document inserted : %d", $dataInserted->getInsertedCount());
+			var_dump($dataInserted->getInsertedIds());
+		?>
+
+		Exemple 4 (récupérer une seule donnée) :
+
+		<?php
+		require 'vendor/autoload.php';
+
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		$mydb = $client->mydb;
+		//$myTable = $mydb->createCollection('myTable');
+		$myTable = $mydb->myTable;
+
+		$dataRead = $myTable->findOne(
+			[
+				"_id" => 1,
+			]
+		);
+
+		var_dump($dataRead);
+		?>
+
+		Exemple 5 (récupérer plusieurs données) :
+
+		<?php
+		require 'vendor/autoload.php';
+
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		//$mydb = $client->selectDatabase('mydb');
+		$mydb = $client->mydb;
+		//$myTable = $mydb->createCollection('myTable');
+		//$myTable = $mydb->selectCollection('myTable');
+		$myTable = $mydb->myTable;
+
+		$dataRead = $myTable->find(
+			[
+				"name" => "Hamza",
+			]
+		);
+
+		foreach($dataRead as $data)
+		{
+			var_dump($dataRead);
+			echo "<br>";
+		}
+		?>
+
+		
