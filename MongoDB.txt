@@ -219,41 +219,61 @@ Intérrogation de MongoDB par PHP :
 		</html>
 
 		<?php
-			require 'vendor/autoload.php';
+		require 'vendor/autoload.php';
 
-			//$client = new MongoDB\Client("mongodb://localhost:27010");
-			$client = new MongoDB\Client;
-			$mydb = $client->selectDatabase('mydb');
-			$myTable = $mydb->selectCollection('myTable');
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		$mydb = $client->selectDatabase('mydb');
+		$myTable = $mydb->selectCollection('myTable');
 
-			if(isset($_POST["upload"]))
+		if(isset($_POST["upload"]))
+		{
+			if(move_uploaded_file($_FILES['file']['tmp_name'], 'upload/'.$_FILES['file']['name']))
 			{
-				if(move_uploaded_file($_FILES['file']['tmp_name'], 'upload/'.$_FILES['file']['name']))
+				$fileName = $_FILES['file']['name'];
+
+				echo "file '".$fileName."' has been uploaded !<br>";
+
+				$result = $myTable->insertOne(
+					[
+						"fileName" => $fileName
+					]
+				);
+
+				if($result->getInsertedCount() > 0)
 				{
-					$fileName = $_FILES['file']['name'];
-
-					echo "file '".$fileName."' has been uploaded !<br>";
-
-					$result = $myTable->insertOne(
-						[
-							"fileName" => $fileName
-						]
-					);
-
-					if($result->getInsertedCount() > 0)
-					{
-						echo "file '".$fileName."' has been inserted !";
-					}
-					else
-					{
-						echo "file has NOT been inserted !";
-					}
+					echo "file '".$fileName."' has been inserted !";
 				}
 				else
 				{
-					echo "file has NOT been uploaded !";
+					echo "file has NOT been inserted !";
 				}
 			}
+			else
+			{
+				echo "file has NOT been uploaded !";
+			}
+		}
 		?>
 
-		
+		Exemple 7 (exporter un fichier existant dans la base de données à prtir d'un dossier)
+
+		<?php
+		require 'vendor/autoload.php';
+
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		$mydb = $client->selectDatabase('mydb');
+		$myTable = $mydb->selectCollection('myTable');
+
+		$results = $myTable->find();
+		foreach($results as $key => $value)
+		{
+			echo $value['fileName'].'<br />';
+			
+			?> <!-- img src="upload/windows.png" alt="windows.png"> <br / --> <?php
+
+			echo '<img src="upload/'.$value['fileName'].'" alt="'.$value['fileName'].'"> <br />';
+		}
+		?>
+
