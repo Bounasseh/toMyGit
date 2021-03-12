@@ -98,28 +98,28 @@ Intérrogation de MongoDB par PHP :
 	Exemple 3 (inserer une seule donnée) :
 
 		<?php
-			require 'vendor/autoload.php';
+		require 'vendor/autoload.php';
 
-			//$client = new MongoDB\Client("mongodb://localhost:27010");
-			$client = new MongoDB\Client;
-			$mydb = $client->mydb;
-			//$myTable = $mydb->createCollection('myTable');
-			$myTable = $mydb->myTable; //au cas où la table est déjà créée
-			
-			for($i = 0; $i < 10; $i++)
-			{
-				$dataInserted = $myTable->insertOne(
-					[
-						"_id" => $i,
-						"name" => "Hamza",
-						"age" => 22
-					]
-				);
-			
-				printf("Count of document inserted : %d", $dataInserted->getInsertedCount());
-				var_dump($dataInserted->getInsertedId());
-				echo "<br>";
-			}
+		//$client = new MongoDB\Client("mongodb://localhost:27010");
+		$client = new MongoDB\Client;
+		$mydb = $client->mydb;
+		//$myTable = $mydb->createCollection('myTable');
+		$myTable = $mydb->myTable; //au cas où la table est déjà créée
+		
+		for($i = 0; $i < 10; $i++)
+		{
+			$dataInserted = $myTable->insertOne(
+				[
+					"_id" => $i,
+					"name" => "Hamza",
+					"age" => 22
+				]
+			);
+		
+			printf("Count of document inserted : %d", $dataInserted->getInsertedCount());
+			var_dump($dataInserted->getInsertedId());
+			echo "<br>";
+		}
 		?>
 
 		Exemple 3 (inserer plusieurs données) :
@@ -196,6 +196,64 @@ Intérrogation de MongoDB par PHP :
 			var_dump($dataRead);
 			echo "<br>";
 		}
+		?>
+
+		Exemple 6 (importer un fichier vers un dossier et ajouter son nom à la base de données)
+
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Document</title>
+		</head>
+		<body>
+			<form action="#" method="POST" enctype="multipart/form-data">
+				<label for="file"></label>
+				<input id="file" name="file" type="file">
+				<br><br>
+				<input name="upload" type="submit" value="update">
+			</form>
+		</body>
+		</html>
+
+		<?php
+			require 'vendor/autoload.php';
+
+			//$client = new MongoDB\Client("mongodb://localhost:27010");
+			$client = new MongoDB\Client;
+			$mydb = $client->selectDatabase('mydb');
+			$myTable = $mydb->selectCollection('myTable');
+
+			if(isset($_POST["upload"]))
+			{
+				if(move_uploaded_file($_FILES['file']['tmp_name'], 'upload/'.$_FILES['file']['name']))
+				{
+					$fileName = $_FILES['file']['name'];
+
+					echo "file '".$fileName."' has been uploaded !<br>";
+
+					$result = $myTable->insertOne(
+						[
+							"fileName" => $fileName
+						]
+					);
+
+					if($result->getInsertedCount() > 0)
+					{
+						echo "file '".$fileName."' has been inserted !";
+					}
+					else
+					{
+						echo "file has NOT been inserted !";
+					}
+				}
+				else
+				{
+					echo "file has NOT been uploaded !";
+				}
+			}
 		?>
 
 		
