@@ -1,0 +1,21 @@
+Read a file
+
+	<?php
+
+	require 'vendor/autoload.php';
+
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+	use \PhpOffice\PhpSpreadsheet\IOFactory;
+
+	$spreadsheet = IOFactory::load('./hello world.xlsx');
+
+	// $spreadsheet = new Spreadsheet();
+	$sheet = $spreadsheet->getActiveSheet();
+	$sheet->setCellValue('A2', 'Hello World !');
+
+	$writer = new Xlsx($spreadsheet);
+	$writer->save('hello world.xlsx');
+
+	?>
+

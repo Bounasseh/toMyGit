@@ -15,8 +15,10 @@ A partir du client MongoDB nous pouvons éxécuter les commandes suivantes :
 		config  0.000GB
 		local   0.000GB
 
-	"db.persons.insert({"prenom": "Hamza"})" : pour insérer une donnée dans une table.
+	"db.persons.insert({"prenom": "Hamza"})" : pour insérer une donnée dans une table "persons" existante ou nouvelle.
 		WriteResult({ "nInserted" : 1 })
+
+	"db.createCollection("persons")" : pour créer une nouvelle collection.
 
 	"show dbs" : pour afficher les bases de données.
 		admin       0.000GB
