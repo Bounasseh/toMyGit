@@ -46,5 +46,7 @@ A partir du client MongoDB nous pouvons éxécuter les commandes suivantes :
 On peut aussi supprimer une base de données directement sans devoir passer par le client MongoDB en exécutant la commande : [mongo <dbname> --eval "db.dropDatabase()"].
 
 	"mongoimport --db mydb --collection mycoll --file C:\Users\HEALTHINNOVATION\desktop\file.txt" : pour importer un fichier de type json.
-	"mongoimport --db mydb --collection mycoll --file C:\Users\HEALTHINNOVATION\desktop\file.csv --type csv --headerline" : pour importer un fichier de type csv.
 
+	"mongoimport --db mydb --collection mycoll --file C:\Users\HEALTHINNOVATION\desktop\file.csv --type csv --headerline" : pour importer un fichier de type csv.
+	ou bien :
+	"mongoimport -d mydb -c mycoll --file C:\Users\HEALTHINNOVATION\desktop\file.csv --type csv --headerline" : pour importer un fichier de type csv.
