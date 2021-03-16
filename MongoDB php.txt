@@ -58,7 +58,7 @@ Intérrogation de MongoDB par PHP :
 		}
 		?>
 
-# Dans le context de PHP, la seule instruction "$mydb = $client->newdb;" ne suffit pas de créer la base de données "newdb", mais il faut aussi créer une première table "$mydb->createCollection('newTable');"
+# Dans le context de PHP, la seule instruction "$mydb = $client->newdb;" ne suffit pas pour créer la base de données "newdb", il faut aussi créer une première table "$mydb->createCollection('newTable');"
 
 	Exemple 3 (inserer une seule donnée) :
 
