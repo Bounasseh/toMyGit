@@ -48,5 +48,9 @@ On peut aussi supprimer une base de données directement sans devoir passer par 
 	"mongoimport --db mydb --collection mycoll --file C:\Users\HEALTHINNOVATION\desktop\file.txt" : pour importer un fichier de type json.
 
 	"mongoimport --db mydb --collection mycoll --file C:\Users\HEALTHINNOVATION\desktop\file.csv --type csv --headerline" : pour importer un fichier de type csv.
-	ou bien :
+ou bien :
 	"mongoimport -d mydb -c mycoll --file C:\Users\HEALTHINNOVATION\desktop\file.csv --type csv --headerline" : pour importer un fichier de type csv.
+"file.csv" :
+	Name,Address,City,State,ZIP
+	Jane Doe,123 Main St,Whereverville,CA,90210
+

@@ -1,0 +1,6 @@
+{
+    "require": {
+        "mongodb/mongodb": "^1.8",
+        "phpoffice/phpspreadsheet": "^1.17"
+    }
+}

@@ -1,4 +1,4 @@
-Read a file
+Read an Xlsx file :
 
 	<?php
 
@@ -16,5 +16,103 @@ Read a file
 
 	$writer = new Xlsx($spreadsheet);
 	$writer->save('hello world.xlsx');
+
+	?>
+
+Read an Xls file :
+
+	<?php
+
+	require 'vendor/autoload.php';
+
+	use PhpOffice\PhpSpreadsheet\Reader\Xls;
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Csv;
+
+	$spreadsheet = new Spreadsheet();
+	$spreadsheet = $spreadsheet->getActiveSheet();
+	$reader = new Xls();
+	$spreadsheet = $reader->load("rapport.xls");
+	$writer = new Csv($spreadsheet);
+	$writer->save("rapport.csv");
+
+	?>
+
+Convert Xlsx to csv file :
+
+	<?php
+
+	require 'vendor/autoload.php';
+
+	use PhpOffice\PhpSpreadsheet\Reader\Xls;
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Csv;
+
+	$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('classeur.xlsx');
+	$writer = ($spreadsheet);
+	$writer->save("rapport.csv");
+
+	?>
+
+Convert Xlsx to csv file with filter :
+
+	<?php
+
+	require 'vendor/autoload.php';
+
+	use PhpOffice\PhpSpreadsheet\Reader\Xls;
+	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+	use PhpOffice\PhpSpreadsheet\Writer\Csv;
+
+	//ini_set(0, 1200);
+
+	$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('rapport.xlsx');
+
+	$autoFilter = $spreadsheet->getActiveSheet()->getAutoFilter();
+	$columnFilter = $autoFilter->getColumn('W');
+	$columnFilter->setFilterType(
+	    \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column::AUTOFILTER_FILTERTYPE_FILTER
+	);
+
+	$columnFilter->createRule()
+	    ->setRule(
+	        \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+	        'Réalisé'
+	    );
+
+	$columnFilter->createRule()
+	    ->setRule(
+	        \PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column\Rule::AUTOFILTER_COLUMN_RULE_EQUAL,
+	        'Réalisé hors Plan'
+	    );
+
+	$autoFilter->showHideRows();
+
+	$tablo[][] = array(array());
+	$i = 0;
+	$j = 0;
+
+	foreach ($spreadsheet->getActiveSheet()->getRowIterator() as $row)
+	{
+	    if ($spreadsheet->getActiveSheet()
+	        ->getRowDimension($row->getRowIndex())->getVisible())
+	    {
+	        echo '<tr>' . PHP_EOL;
+	        $cellIterator = $row->getCellIterator();
+	        $cellIterator->setIterateOnlyExistingCells(FALSE);
+	        foreach ($cellIterator as $cell) {
+	            $tablo[$i][$j] = $cell->getValue();
+	            $j++;
+	        }
+	        echo '</tr>' . PHP_EOL;
+	    }
+	    $i++;
+	}
+
+	$output = fopen("rapport.csv",'c') or die("Can't open php://output");
+	foreach($tablo as $row) {
+	    fputcsv($output, $row);
+	}
+	fclose($output) or die("Can't close php://output");
 
 	?>
